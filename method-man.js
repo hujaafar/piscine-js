@@ -1,8 +1,8 @@
 function words(value){
-    return value.split("");
+    return value.split(" ");
 }
 function sentence(value) {
-    return value.join("");
+    return value.join(" ");
 }
 
 function yell(value) {
