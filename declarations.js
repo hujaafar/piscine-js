@@ -1,16 +1,16 @@
 const escapeStr ="`\\/\"'" ;
-const arr = [4, '2'];
-const obj = {
+const arr =Object.freeze([4, '2'])
+const obj = Object.freeze({
     str:"Habib llolololo",
     num : 2,
     bool : true,
     undef: undefined  
-}
+})
 const nested =Object.freeze({
-    arr: [4, undefined, '2'],
-    obj:{
-        str: "Habi",
-        num: 3,
-        bool: false
-    }  
+     arr :Object.freeze([4, '2']) ,
+     obj: Object.freeze({
+        str:"Habib llolololo",
+        num : 2,
+        bool : true,
+         })
 })
