@@ -1,6 +1,14 @@
-more = (num ) => num++ ;
-less = (num ) => num-- ;
-add = (num1 , num2 ) => num1+num2 ;
-sub = (nunum1 , num2 ) => num1*num2 ;
+function more(num) {
+    return num++;
+} 
+function less  (num ) {
 
+    return num--;
+} 
+function add  (num1 , num2 ) {
+    return num1 + num2;
+} 
+function sub  (nunum1 , num2 ) {
+    return num1 - num2;
+} 
 
