@@ -7,5 +7,5 @@ function last(value) {
 }
 
 function kiss(value) {
-    return value[0] + value[value.length - 1];
+    return value[value.length - 1] + value[0];;
 }
