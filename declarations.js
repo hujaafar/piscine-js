@@ -6,11 +6,11 @@ const obj = {
     bool : true,
     undef: undefined  
 }
-const nested = {
+const nested =Object.freeze({
     arr: [4, undefined, '2'],
-    obj:Object.freeze({
+    obj:{
         str: "Habi",
         num: 3,
         bool: false
-    })    
-}
+    }  
+})
