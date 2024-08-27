@@ -26,7 +26,6 @@ function dogYears(planet, ageInSeconds) {
     // Convert the age in planet years to dog years
     const ageInDogYears = ageInPlanetYears * 7;
 
-    // Round the result to two decimal places
-    return ageInDogYears.toFixed(2);
+    // Round the result to two decimal places and convert to number
+    return parseFloat(ageInDogYears.toFixed(2));
 }
-
