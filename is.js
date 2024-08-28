@@ -1,59 +1,12 @@
-const is={}
-
-    // Check if value is a number (and not NaN)
-   is.num= function(value) {
-        return typeof value === 'number'}
-   
-
-    // Check if value is NaN (Not a Number)
-    is.nan= function(value) {
-    return Number.isNaN(value)
-}
-
-   
-
-    // Check if value is a string
-    is.str= function(value) {
-        return typeof value === 'string'}
-   
-
-    // Check if value is a boolean
-   is.bool= function(value) {
-        return typeof value === 'boolean'}
-   
-
-    // Check if value is undefined
-   is.undef= function(value) {
-        return  value === 'undefined'}
-   
-
-    // Check if value is defined (not undefined)
-   is.def= function(value) {
-        return  value !== 'undefined'}
-   
-
-    // Check if value is an array
-   is.arr= function(value) {
-        return Array.isArray(value)}
-   
-
-    // Check if value is a simple object or null
-   is.obj= function(value) {
-        return value !== null && typeof value === 'object' && !Array.isArray(value)}
-   
-
-    // Check if value is a function
-  is.fun= function(value) {
-        return typeof value === 'function'}
-   
-
-    // Check if value is truthy
-  is.truthy= function(value) {
-        return !!value}
-   
-
-    // Check if value is falsy
-   is.falsy= function(value) {
-        return !value}
-    
-
+const is = {};
+is.num = (value) => typeof value === 'number';
+is.nan = (value) => Number.isNaN(value);
+is.str = (value) => typeof value === 'string';
+is.bool = (value) => typeof value === 'boolean';
+is.undef = (value) => value === undefined;
+is.def = (value) => value !== undefined;
+is.arr = (value) => Array.isArray(value);
+is.obj = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+is.fun = (value) => typeof value === 'function';
+is.truthy = (value) => !!value;
+is.falsy = (value) => !value;
