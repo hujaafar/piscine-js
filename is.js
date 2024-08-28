@@ -1,4 +1,6 @@
-const is = {
+const is={}
+
+ is = {
     // Check if value is a number (and not NaN)
     num: function(value) {
         return typeof value === 'number' && !isNaN(value);
