@@ -1,4 +1,4 @@
-const typeCheck = {
+const is = {
     // Check if value is a number (and not NaN)
     num: function(value) {
         return typeof value === 'number' && !isNaN(value);
@@ -36,7 +36,7 @@ const typeCheck = {
 
     // Check if value is a simple object or null
     obj: function(value) {
-        return (value !== null && typeof value === 'object' && !Array.isArray(value));
+        return value !== null && typeof value === 'object' && !Array.isArray(value);
     },
 
     // Check if value is a function
