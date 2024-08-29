@@ -46,15 +46,15 @@ function modulo(a, b) {
 
     // Use divide to find the quotient
     let quotient = divide(a, b);
-    // Multiply the quotient by b and subtract from a to get the remainder
+    // Compute the remainder
     let remainder = a - multiply(quotient, b);
 
-    // Adjust remainder to ensure it's within the range of 0 to |b|-1
+    // Adjust remainder to ensure it's within the range of 0 to |b|-1 if b > 0, or |b| < r <= 0 if b < 0
     if (b < 0) {
         if (remainder > 0) {
-            remainder += Math.abs(b);
-        } else if (remainder < 0) {
             remainder -= Math.abs(b);
+        } else if (remainder < 0) {
+            remainder += Math.abs(b);
         }
     } else {
         if (remainder < 0) {
