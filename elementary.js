@@ -1,67 +1,56 @@
-// Function to perform multiplication without using the '*' operator
+// Function to multiply two numbers without using the * operator
 function multiply(a, b) {
     let result = 0;
-    let positiveB = Math.abs(b);
-
-    for (let i = 0; i < positiveB; i++) {
+    let positive = Math.abs(b);
+    
+    for (let i = 0; i < positive; i++) {
         result += a;
     }
-
-    // If b is negative, negate the result
-    if (b < 0) {
-        result = -result;
-    }
-
-    return result;
+    
+    // If b is negative, change the sign of the result
+    return b < 0 ? -result : result;
 }
 
-// Function to perform integer division without using the '/' operator
+// Function to divide two numbers without using the / operator
 function divide(a, b) {
     if (b === 0) {
-        throw new Error("Cannot divide by zero");
+        throw new Error("Division by zero is not allowed");
     }
-
+    
     let result = 0;
-    let absA = Math.abs(a);
-    let absB = Math.abs(b);
-
-    while (absA >= absB) {
-        absA -= absB;
+    let dividend = Math.abs(a);
+    let divisor = Math.abs(b);
+    
+    while (dividend >= divisor) {
+        dividend -= divisor;
         result++;
     }
-
-    // Handle sign of the result
+    
+    // Determine the sign of the result
     if ((a < 0) !== (b < 0)) {
         result = -result;
     }
-
+    
     return result;
 }
 
-// Revised function to perform modulo operation without using the '%' operator
+// Function to get the modulo of two numbers without using the % operator
 function modulo(a, b) {
     if (b === 0) {
-        throw new Error("Cannot divide by zero");
+        throw new Error("Division by zero is not allowed");
     }
-
-    // Use divide to find the quotient
-    let quotient = divide(a, b);
-    // Compute the remainder
-    let remainder = a - multiply(quotient, b);
-
-    // Adjust the remainder to have the same sign as the divisor and be within the correct range
-    if (b < 0) {
-        if (remainder > 0) {
-            remainder -= Math.abs(b);
-        } else if (remainder < b) {
-            remainder += Math.abs(b);
-        }
-    } else {
-        if (remainder < 0) {
-            remainder += Math.abs(b);
-        }
+    
+    let dividend = Math.abs(a);
+    let divisor = Math.abs(b);
+    
+    while (dividend >= divisor) {
+        dividend -= divisor;
     }
-
-    return remainder;
+    
+    // Determine the sign of the result based on the divisor
+    if (a < 0) {
+        dividend = -dividend;
+    }
+    
+    return dividend;
 }
-
