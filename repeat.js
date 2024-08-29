@@ -1,7 +1,7 @@
-function repeatString(v, n) {
+const repeat= (v, n)=> {
     let word = "";
-    for (let i = 0; i < n; i++) {
-        word += v;
+    for (let i = 0; i <= n; i++) {
+        return word += v;
     }
-    return word;
+ 
 }
