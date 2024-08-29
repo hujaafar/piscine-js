@@ -1,7 +1,7 @@
-function repeat (v , n){
-    var let 
-     for (i = 0; i <= n ; i++) {
-      let+=v  
-     }
-     return let
+function repeatString(v, n) {
+    let word = "";
+    for (let i = 0; i < n; i++) {
+        word += v;
+    }
+    return word;
 }
