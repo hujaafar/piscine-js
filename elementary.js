@@ -1,3 +1,4 @@
+// Function to perform multiplication without using the '*' operator
 function multiply(a, b) {
     let result = 0;
     let positiveB = Math.abs(b);
@@ -37,7 +38,7 @@ function divide(a, b) {
     return result;
 }
 
-// Function to perform modulo operation without using the '%' operator
+// Revised function to perform modulo operation without using the '%' operator
 function modulo(a, b) {
     if (b === 0) {
         throw new Error("Cannot divide by zero");
@@ -48,10 +49,20 @@ function modulo(a, b) {
     // Multiply the quotient by b and subtract from a to get the remainder
     let remainder = a - multiply(quotient, b);
 
-    // Ensure remainder has the same sign as b
-    if (remainder < 0 && b > 0 || remainder > 0 && b < 0) {
-        remainder += Math.abs(b);
+    // Adjust remainder to ensure it's within the range of 0 to |b|-1
+    if (b < 0) {
+        if (remainder > 0) {
+            remainder += Math.abs(b);
+        } else if (remainder < 0) {
+            remainder -= Math.abs(b);
+        }
+    } else {
+        if (remainder < 0) {
+            remainder += Math.abs(b);
+        }
     }
 
     return remainder;
 }
+
+
