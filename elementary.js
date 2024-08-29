@@ -46,7 +46,6 @@ function divide(a, b) {
     return isNegative ? -quotient : quotient;
 }
 
-// Function to find the modulo of two numbers without using the % operator
 function modulo(a, b) {
     // Handle division by zero
     if (b === 0) {
@@ -61,4 +60,3 @@ function modulo(a, b) {
 
     return remainder;
 }
-
