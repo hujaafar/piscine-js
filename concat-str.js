@@ -1,3 +1,3 @@
-const concatStr=function (str1, str2) {
-    return String(str1) + String(str2);
+function concatStr(str1, str2) {
+    return str1.toString() + str2.toString();
 }

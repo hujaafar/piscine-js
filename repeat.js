@@ -1,6 +1,6 @@
-function repeat(str, times) {
-    let result = "";
-    for (let i = 0; i < times; i++) {
+function repeat(str, num) {
+    var result = "";
+    for (var i = 0; i < num; i++) {
         result += str;
     }
     return result;

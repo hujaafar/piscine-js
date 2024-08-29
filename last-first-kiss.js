@@ -1,12 +1,11 @@
-function first(value) {
-    return value[0];
+function first(input) {
+    return input[0];
 }
 
-function last(value) {
-    return value[value.length - 1];
+function last(input) {
+    return input[input.length - 1];
 }
 
-function kiss(value) {
-    return [value[value.length - 1], value[0]];
+function kiss(input) {
+    return [last(input), first(input)];
 }
-

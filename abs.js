@@ -1,11 +1,15 @@
-function isPositive(num) {
-    return num > 0;
+function isPositive(a) {
+    if (a > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-function abs(num) {
-   if (num <0){
-        return num * -1;
+function abs(a) {
+    if (isPositive(a) || a == 0) {
+        return a;
     } else {
-        return num;
-   }
+        return -a;
+    }
 }

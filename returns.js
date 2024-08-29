@@ -1,7 +1,7 @@
-function id(value) {
-    return value;
+function id(x) {
+    return x;
 }
 
-function getLength(value) {
-    return value.length;
+function getLength(x) {
+    return x.length;
 }

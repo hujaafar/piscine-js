@@ -1,21 +1,19 @@
-function words(str) {
-    return str.split(' ');
+function words(string) {
+    return string.split(" ");
 }
 
 function sentence(arr) {
-    return arr.join(' ');
+    return arr.join(" ");
 }
 
-function yell(str) {
-    return str.toUpperCase();
+function yell(string) {
+    return string.toUpperCase();
 }
 
-function whisper(str) {
-    return `*${str.toLowerCase()}*`;
+function whisper(string) {
+    return "*" + string.toLowerCase() + "*";
 }
 
-
-function capitalize(str) {
-    if (str.length === 0) return '';
-    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }

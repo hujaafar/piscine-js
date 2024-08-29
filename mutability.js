@@ -1,5 +1,11 @@
-const clone1 = {...person}
-const clone2 = {...person }
-const samePerson = person
-++person.age
-person.country = 'FR'
+let clone1 = { ...person };
+let clone2 = Object.assign({}, person);
+
+let samePerson = person;
+
+person.age += 1;
+person.country = "FR";
+
+if (person !== clone1) {
+    samePerson = person;
+}

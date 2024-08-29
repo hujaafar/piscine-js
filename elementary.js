@@ -1,56 +1,47 @@
-// Function to multiply two numbers without using the * operator
 function multiply(a, b) {
-    let result = 0;
-    let positive = Math.abs(b);
-    
-    for (let i = 0; i < positive; i++) {
-        result += a;
+    let res;
+    if (a === 0 || b === 0) {
+        res = 0;
+    } else {
+        if (b < 0) {
+            a = -a;
+            b = -b;
+        }
+        res = a + multiply(a, b - 1);
     }
-    
-    // If b is negative, change the sign of the result
-    return b < 0 ? -result : result;
+    return res;
 }
 
-// Function to divide two numbers without using the / operator
 function divide(a, b) {
-    if (b === 0) {
-        throw new Error("Division by zero is not allowed");
+    let res;
+    if (a === 0) {
+        res = 0;
+    } else if (b === 1) {
+        res = a;
+    } else if (b === -1) {
+        res = -a;
+    } else if (b === 0) {
+        return Infinity;
+    } else {
+        let neg;
+        if (a < 0) {
+            a = Math.abs(a);
+            neg = true;
+        }
+        if (b < 0) {
+            b = Math.abs(b);
+            neg ? (neg = false) : (neg = true);
+        }
+        let count = 0;
+        while (a >= b) {
+            a -= b;
+            count++;
+        }
+        res = neg ? -count : count;
     }
-    
-    let result = 0;
-    let dividend = Math.abs(a);
-    let divisor = Math.abs(b);
-    
-    while (dividend >= divisor) {
-        dividend -= divisor;
-        result++;
-    }
-    
-    // Determine the sign of the result
-    if ((a < 0) !== (b < 0)) {
-        result = -result;
-    }
-    
-    return result;
+    return res;
 }
 
-// Function to get the modulo of two numbers without using the % operator
-function modulo(a, b) {
-    if (b === 0) {
-        throw new Error("Division by zero is not allowed");
-    }
-    
-    let dividend = Math.abs(a);
-    let divisor = Math.abs(b);
-    
-    while (dividend >= divisor) {
-        dividend -= divisor;
-    }
-    
-    // Determine the sign of the result based on the divisor
-    if (a < 0) {
-        dividend = -dividend;
-    }
-    
-    return dividend;
+function modulo(num, divisor) {
+    return num - multiply(divisor, divide(num, divisor));
 }

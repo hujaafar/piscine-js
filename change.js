@@ -1,7 +1,12 @@
 function get(key) {
-    return sourceObject[key]
+    return eval("sourceObject." + key);
 }
 
 function set(key, value) {
-    return sourceObject[key] = value
+    if (typeof value === "string") {
+        eval("sourceObject." + key + "='" + value + "'");
+    } else {
+        eval("sourceObject." + key + "=" + value);
+    }
+    return value;
 }

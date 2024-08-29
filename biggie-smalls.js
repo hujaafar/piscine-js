@@ -1,3 +1,2 @@
-const smalls = -Infinity;
-
-const biggie = Infinity;
+const smalls = Number.NEGATIVE_INFINITY;
+const biggie = Number.POSITIVE_INFINITY;
