@@ -49,14 +49,14 @@ function modulo(a, b) {
     // Compute the remainder
     let remainder = a - multiply(quotient, b);
 
-    // Adjust remainder to ensure it's within the range of 0 to |b|-1 if b > 0, or |b| < r <= 0 if b < 0
+    // Adjust remainder to ensure it has the correct sign
     if (b < 0) {
+        // Ensure remainder is within the range |b| <= remainder < 0
         if (remainder > 0) {
-            remainder -= Math.abs(b);
-        } else if (remainder < 0) {
             remainder += Math.abs(b);
         }
     } else {
+        // Ensure remainder is within the range 0 <= remainder < |b|
         if (remainder < 0) {
             remainder += Math.abs(b);
         }
@@ -64,5 +64,4 @@ function modulo(a, b) {
 
     return remainder;
 }
-
 
