@@ -1,127 +1,80 @@
-var circles = [];
-var box;
+GET /mouse-trap/mouse-trap.html
+GET /mouse-trap/mouse-trap.data.css
+GET /mouse-trap/mouse-trap.js
+test #2 failed:
+async ({ page, eq, getCirclesPos }) => {
+  // check that a circle is trapped and purple when inside the box
+  const box = await page.$eval('.box', box => ({
+    top: box.getBoundingClientRect().top,
+    right: box.getBoundingClientRect().right,
+    left: box.getBoundingClientRect().left,
+    bottom: box.getBoundingClientRect().bottom,
+  }))
 
-class Circle {
-    // Creates an instance of a circle
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.diameter = 50;
-        this.isTrapped = false;
-        this.HTML = null;
-        this.draw();
-        circles.push(this);
+  await page.mouse.click(200, 200)
+
+  let move = 200
+  let hasEntered = false
+
+  while (move < 500) {
+    const x = move + 50
+    const y = move
+    await page.mouse.move(x, y)
+
+    const circles = await getCirclesPos()
+    const currentCircle = circles[circles.length - 1]
+
+    const circleRadius = 25
+
+    const bg = await page.$$eval(
+      '.circle',
+      nodes => nodes[nodes.length - 1].style.background,
+    )
+
+    const insideX = x > box.left + circleRadius && x < box.right - circleRadius
+    const insideY = y > box.top + circleRadius && y < box.bottom - circleRadius
+    const isInside = insideX && insideY
+
+    // check that the background is set to the right color
+    if (isInside) {
+      hasEntered = true
+      eq(bg, 'var(--purple)')
+    } else {
+      eq(bg, hasEntered ? 'var(--purple)' : 'white')
     }
 
-    // "Draws" the circle by creating a div and appending it to the body
-    draw() {
-        this.HTML = document.createElement("div");
-        this.HTML.classList.add("circle");
-        this.HTML.style.position = "absolute";
-        this.HTML.style.top = this.y + "px";
-        this.HTML.style.left = this.x + "px";
-        this.HTML.style.width = this.diameter + "px";
-        this.HTML.style.height = this.diameter + "px";
-        this.HTML.style.borderRadius = "50%";
-        this.HTML.style.background = "white";
-        this.trapped(); // Check if it's trapped upon creation
-        document.body.appendChild(this.HTML);
+    // check that the mouse is trapped inside the box
+    if (hasEntered) {
+      if (insideY) {
+        eq(currentCircle[1], y)
+      } else {
+        const maxY =
+          currentCircle[1] === box.top + circleRadius + 1 ||
+          currentCircle[1] === box.top + circleRadius ||
+          currentCircle[1] === box.bottom - circleRadius ||
+          currentCircle[1] === box.bottom - circleRadius - 1
+        eq(maxY, true)
+      }
+      if (insideX) {
+        eq(currentCircle[0], x)
+      } else {
+        const maxX =
+          currentCircle[0] === box.left + circleRadius ||
+          currentCircle[0] === box.left + circleRadius + 1 ||
+          currentCircle[0] === box.right - circleRadius ||
+          currentCircle[0] === box.right - circleRadius - 1
+        eq(maxX, true)
+      }
     }
-
-    // Moves the circle to the given x and y coordinates
-    move(x, y) {
-        this.trapped();
-        if (!this.isTrapped) {
-            this.x = x;
-            this.y = y;
-            this.HTML.style.top = this.y + "px";
-            this.HTML.style.left = this.x + "px";
-        } else {
-            if (this.inRectangle(x, y)) {
-                this.x = x;
-                this.y = y;
-                this.HTML.style.top = this.y + "px";
-                this.HTML.style.left = this.x + "px";
-            } else {
-                if (this.inRectangle(x, this.y)) {
-                    this.x = x;
-                    this.HTML.style.left = this.x + "px";
-                } else if (this.inRectangle(this.x, y)) {
-                    this.y = y;
-                    this.HTML.style.top = this.y + "px";
-                }
-            }
-        }
-    }
-
-    // Checks if the circle is inside the box
-    trapped() {
-        if (
-            this.x >= box.x &&
-            this.x + this.diameter <= box.x + box.width &&
-            this.y >= box.y &&
-            this.y + this.diameter <= box.y + box.height
-        ) {
-            this.isTrapped = true;
-            this.HTML.style.background = "var(--purple)";
-        } else {
-            this.isTrapped = false;
-            this.HTML.style.background = "white";
-        }
-    }
-
-    // Checks if the given x and y coordinates for the circle are inside the box
-    inRectangle(x, y) {
-        return (
-            x >= box.x &&
-            x + this.diameter <= box.x + box.width &&
-            y >= box.y &&
-            y + this.diameter <= box.y + box.height
-        );
-    }
+    move++
+  }
 }
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
 
-class Box {
-    constructor() {
-        this.HTML = document.createElement("div");
-        this.HTML.classList.add("box");
-        this.HTML.style.position = "absolute";
-        this.HTML.style.top = "50%";
-        this.HTML.style.left = "50%";
-        this.HTML.style.width = "300px"; // Set a width for the box
-        this.HTML.style.height = "300px"; // Set a height for the box
-        this.HTML.style.border = "2px solid black"; // Add a border for visibility
-        this.HTML.style.transform = "translate(-50%, -50%)";
-        document.body.appendChild(this.HTML);
-        this.x = this.HTML.offsetLeft;
-        this.y = this.HTML.offsetTop;
-        this.width = this.HTML.offsetWidth;
-        this.height = this.HTML.offsetHeight;
-    }
-}
-
-// Event listener for creating a circle on click
-document.body.addEventListener("click", (e) => {
-    createCircle(e);
-});
-
-// Event listener for moving the last created circle with mouse movements
-document.body.addEventListener("mousemove", (e) => {
-    moveCircle(e);
-});
-
-function createCircle(e) {
-    if (e === undefined) return;
-    new Circle(e.clientX - 25, e.clientY - 25); // Center the circle at the click position
-}
-
-function moveCircle(e) {
-    if (e === undefined || circles.length === 0) return;
-    circles[circles.length - 1].move(e.clientX - 25, e.clientY - 25); // Move the last created circle
-}
-
-function setBox() {
-    box = new Box();
-}
-
-export { createCircle, moveCircle, setBox };
++ 'white'
+- 'var(--purple)'
+    at file:///app/mouse-trap_test.js:84:7
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+    at async Server.<anonymous> (file:///app/test.js:147:11)
