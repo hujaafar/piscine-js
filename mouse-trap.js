@@ -1,80 +1,104 @@
-GET /mouse-trap/mouse-trap.html
-GET /mouse-trap/mouse-trap.data.css
-GET /mouse-trap/mouse-trap.js
-test #2 failed:
-async ({ page, eq, getCirclesPos }) => {
-  // check that a circle is trapped and purple when inside the box
-  const box = await page.$eval('.box', box => ({
-    top: box.getBoundingClientRect().top,
-    right: box.getBoundingClientRect().right,
-    left: box.getBoundingClientRect().left,
-    bottom: box.getBoundingClientRect().bottom,
-  }))
+import { places } from "./where-do-we-go.data.js";
 
-  await page.mouse.click(200, 200)
+var scroll = window.scrollY;
+const location = document.createElement("a");
+location.classList.add("location");
+document.body.appendChild(location);
+document.addEventListener("DOMContentLoaded", () => {
+    selectPlace();
+});
 
-  let move = 200
-  let hasEntered = false
+document.addEventListener("scroll", () => {
+    selectPlace();
+    scroll > window.scrollY
+        ? (document.querySelector(".direction").innerHTML = "N")
+        : (document.querySelector(".direction").innerHTML = "S");
+    scroll = window.scrollY;
+});
 
-  while (move < 500) {
-    const x = move + 50
-    const y = move
-    await page.mouse.move(x, y)
+const explore = () => {
+    places.sort(compareCoordinates);
+    console.log(places);
+    places.forEach(place => {
+        createSection(place);
+    });
+    const compass = document.createElement("div");
+    compass.classList.add("direction");
+    document.body.appendChild(compass);
+};
 
-    const circles = await getCirclesPos()
-    const currentCircle = circles[circles.length - 1]
 
-    const circleRadius = 25
+const createSection = (place) => {
+    let section = document.createElement("section");
+    section.style.background = `url('./where-do-we-go_images/${
+        place.name.toLowerCase().replaceAll(/ /g, "-").split(",")[0]
+    }.jpg')`;
+    section.style.backgroundSize = "cover";
+    section.style.backgroundPosition = "center";
+    section.style.backgroundRepeat = "no-repeat";
+    section.style.width = "100%";
+    section.style.height = "100vh";
+    document.body.appendChild(section);
+};
 
-    const bg = await page.$$eval(
-      '.circle',
-      nodes => nodes[nodes.length - 1].style.background,
-    )
 
-    const insideX = x > box.left + circleRadius && x < box.right - circleRadius
-    const insideY = y > box.top + circleRadius && y < box.bottom - circleRadius
-    const isInside = insideX && insideY
+const selectPlace = () => {
+    const sectionHeight = window.innerHeight;
+    const scroll = window.scrollY + sectionHeight / 2;
+    const sectionIndex = Math.floor(scroll / sectionHeight);
+    const place = places[sectionIndex];
 
-    // check that the background is set to the right color
-    if (isInside) {
-      hasEntered = true
-      eq(bg, 'var(--purple)')
-    } else {
-      eq(bg, hasEntered ? 'var(--purple)' : 'white')
-    }
+    location.textContent = `${place.name}\n${place.coordinates}`;
+    location.href = `https://www.google.com/maps/place/${urlEncodeCoordinates(
+        place.coordinates
+    )}/`;
+    
+    console.log(
+        location.href
+            .split("%C2%B0").join("°")
+            .split("%22").join('"')
+            .split("%20").join(" ")
+    );
+    
+    location.target = "_blank";
+    location.style.color = place.color;
+};
 
-    // check that the mouse is trapped inside the box
-    if (hasEntered) {
-      if (insideY) {
-        eq(currentCircle[1], y)
-      } else {
-        const maxY =
-          currentCircle[1] === box.top + circleRadius + 1 ||
-          currentCircle[1] === box.top + circleRadius ||
-          currentCircle[1] === box.bottom - circleRadius ||
-          currentCircle[1] === box.bottom - circleRadius - 1
-        eq(maxY, true)
-      }
-      if (insideX) {
-        eq(currentCircle[0], x)
-      } else {
-        const maxX =
-          currentCircle[0] === box.left + circleRadius ||
-          currentCircle[0] === box.left + circleRadius + 1 ||
-          currentCircle[0] === box.right - circleRadius ||
-          currentCircle[0] === box.right - circleRadius - 1
-        eq(maxX, true)
-      }
-    }
-    move++
-  }
-}
-AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
-+ actual - expected
 
-+ 'white'
-- 'var(--purple)'
-    at file:///app/mouse-trap_test.js:84:7
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (internal/process/task_queues.js:93:5)
-    at async Server.<anonymous> (file:///app/test.js:147:11)
+const urlEncodeCoordinates = (coordinates) =>
+    coordinates
+        .replaceAll(" ", "%20")
+        .replaceAll("°", "%C2%B0")
+        .replaceAll('"', "%22");
+
+
+const compareCoordinates = (a, b) => {
+    const parseCoordinates = (coord) => {
+        const direction = coord.split(" ")[0].split('"')[1];
+        const lat = coord.split(" ")[0];
+        let deg = parseInt(lat.split("°")[0]);
+        let min = parseInt(lat.split("°")[1].split("'")[0]);
+        let sec = parseInt(lat.split("°")[1].split("'")[1].split('"')[0]);
+
+        if (direction === "S") {
+            deg = -deg;
+            min = -min;
+            sec = -sec;
+        }
+        return { deg, min, sec };
+    };
+
+    const aParsed = parseCoordinates(a.coordinates);
+    const bParsed = parseCoordinates(b.coordinates);
+
+    return aParsed.deg !== bParsed.deg
+        ? bParsed.deg - aParsed.deg
+        : aParsed.min !== bParsed.min
+        ? bParsed.min - aParsed.min
+        : aParsed.sec !== bParsed.sec
+        ? bParsed.sec - aParsed.sec
+        : 0;
+};
+
+
+export { explore };
