@@ -10,3 +10,4 @@ function dayOfTheYear(date) {
 function isFirstofFirst(date) {
     return date.getDate() === 1 && date.getMonth() === 0;
 }
+
