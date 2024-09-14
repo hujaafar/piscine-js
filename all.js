@@ -6,3 +6,5 @@ async function all(objs = {}) {
     }
     return res;
 }
+
+
