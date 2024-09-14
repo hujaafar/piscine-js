@@ -14,3 +14,5 @@ function blockChain(data, prev) {
         },
     };
 }
+
+
