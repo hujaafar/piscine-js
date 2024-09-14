@@ -10,3 +10,4 @@ function set(key, value) {
     }
     return value;
 }
+
