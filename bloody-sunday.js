@@ -16,3 +16,4 @@ function bloodySunday(date) {
     console.log(week[counter % 6]);
     return week[counter % 6];
 }
+
