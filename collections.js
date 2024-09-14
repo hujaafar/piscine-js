@@ -69,3 +69,5 @@ function superTypeOf(value) {
         return "Function";
     }
 }
+
+
