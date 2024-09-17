@@ -13,3 +13,4 @@ function dogYears(planet, age) {
 
     return Number(Number(earthAge / planets[planet]).toFixed(2));
 }
+
