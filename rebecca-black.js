@@ -18,3 +18,4 @@ function isLastDayOfMonth(date) {
         new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate() === d.getDate()
     );
 }
+
